@@ -3,6 +3,17 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+// import SimpleLightbox from 'simplelightbox';
+// import 'simplelightbox/dist/simple-lightbox.min.css';
+
+// const axios = require('axios/dist/axios.min.js');
+// const Notiflix = require('notiflix/dist/notiflix-notify-aio-3.2.6.min.js');
+
+// const axios = require('axios/dist/axios.min.js');
+// const Notiflix = require('notiflix/dist/notiflix-notify-aio-3.2.6.min.js');
+// const SimpleLightbox = require('simplelightbox/dist/simple-lightbox.min.js');
+// require('simplelightbox/dist/simple-lightbox.min.css');
+
 const form = document.getElementById('search-form');
 const gallery = document.getElementById('gallery');
 const loadMoreBtn = document.getElementById('load-more');
