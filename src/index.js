@@ -1,7 +1,7 @@
-import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { searchImages } from './api-services';
 
 const form = document.getElementById('search-form');
 const gallery = document.getElementById('gallery');
@@ -10,33 +10,32 @@ let page = 1;
 
 form.addEventListener('submit', async function (e) {
   e.preventDefault();
-  const searchQuery = e.target.elements.searchQuery.value.trim();
-
-  if (!searchQuery) {
-    return;
-  }
-
   try {
-    const response = await searchImages(searchQuery);
+    const searchQuery = e.target.elements.searchQuery.value.trim();
+    if (!searchQuery) return;
+
+    page = 1;
+    gallery.innerHTML = '';
+
+    const response = await searchImages(searchQuery, page);
     handleResponse(response);
   } catch (error) {
-    console.error('Error fetching images:', error);
+    console.error('Error:', error);
     showErrorMessage('Something went wrong. Please try again.');
   }
 });
 
 loadMoreBtn.addEventListener('click', async function () {
-  const searchQuery = form.elements.searchQuery.value.trim();
-
-  if (searchQuery) {
-    try {
+  try {
+    const searchQuery = form.elements.searchQuery.value.trim();
+    if (searchQuery) {
       page++;
-      const response = await searchImages(searchQuery);
+      const response = await searchImages(searchQuery, page);
       handleResponse(response);
-    } catch (error) {
-      console.error('Error fetching more images:', error);
-      showErrorMessage('Something went wrong. Please try again.');
     }
+  } catch (error) {
+    console.error('Error:', error);
+    showErrorMessage('Something went wrong. Please try again.');
   }
 });
 
@@ -47,16 +46,6 @@ gallery.addEventListener('click', function (e) {
     showLargeImage(largeImageUrl);
   }
 });
-
-async function searchImages(query) {
-  const apiKey = '40631901-ff7c1609fa7e5ab5e54020e9b';
-  const perPage = 40;
-
-  const url = `https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
-
-  const response = await axios.get(url);
-  return response.data;
-}
 
 function handleResponse(response) {
   const images = response.hits;
